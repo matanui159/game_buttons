@@ -1,11 +1,14 @@
 local Entity = require('Entity')
 local Button = require('game.Button')
 
+local Input = require('game.input.Input')
+
 local GameScene = Entity:extend()
 
 function GameScene:new(size)
 	self.size = size
 	self.buttons = Entity()
+	self.input = Input()
 
 	for y = 1, size do
 		for x = 1, size do
@@ -14,8 +17,10 @@ function GameScene:new(size)
 	end
 end
 
-function GameScene:key(key)
-	print(key)
+function GameScene:updateEnd()
+	if self.input.action then
+		print('ACTION')
+	end
 end
 
 function GameScene:draw()
@@ -24,10 +29,6 @@ function GameScene:draw()
 		love.graphics.getWidth() / self.size,
 		love.graphics.getHeight() / self.size
 	)
-
-	if love.keyboard.isDown('space') then
-		self.buttons:callSkip()
-	end
 end
 
 function GameScene:drawEnd()

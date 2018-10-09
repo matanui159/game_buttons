@@ -11,20 +11,17 @@ end
 
 function Entity:callTree(name, ...)
 	self:call(name, ...)
-	for _, child in pairs(self) do
-		if Object.is(child, Entity) then
-			if child._skip then
-				child._skip = nil
-			else
+	for key, child in pairs(self) do
+		if key ~= 'parent' and Object.is(child, Entity) then
+			if not child.skip then
+				child.parent = self
 				child:callTree(name, ...)
+				child.parent = nil
 			end
+			child.skip = nil
 		end
 	end
 	self:call(name .. 'End', ...)
-end
-
-function Entity:callSkip()
-	self._skip = true
 end
 
 return Entity
