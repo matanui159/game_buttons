@@ -5,19 +5,21 @@ local Button = Entity:extend()
 function Button:new(x, y, size)
 	self.x = x
 	self.y = y
-	
-	local rand = love.math.random()
-	self.timer = rand * size
+	self.size = size
+	self.timer = size * love.math.random()
 end
 
-function Button:button()
-	if self.timer < 0 then
-		self.clear = true
+function Button:clear()
+	if self.timer < 0 and not self.state then
+		self.state = true
+		self.vel = -10
+		return true
 	end
+	return false
 end
 
 function Button:draw()
-	if not self.clear then
+	if not self.state then
 		if self.timer > 0 then
 			love.graphics.setColor(0, 1, 0, 1)
 		else
@@ -27,9 +29,19 @@ function Button:draw()
 	end
 end
 
+function Button:postDraw()
+	if self.state then
+		love.graphics.setColor(1, 0, 0, 1)
+		love.graphics.rectangle('fill', self.x + 0.1, self.y + 0.1, 0.8, 0.8)
+	end
+end
+
 function Button:update(dt)
-	if not self.clear then
-		self.timer = self.timer - dt / self.parent.size
+	if self.state then
+		self.vel = self.vel + dt * 100
+		self.y = self.y + self.vel * dt
+	else
+		self.timer = self.timer - dt / self.size
 		if self.timer < -1 then
 			self.root:callTree('lose')
 		end

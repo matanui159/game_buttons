@@ -1,18 +1,18 @@
-local Entity = require('Entity')
+local Input = require('game.input.Input')
 
-local Keyboard = Entity:extend()
+local Keyboard = Input:extend()
 
 function Keyboard:key(key)
 	if key == 'left' or key == 'a' then
-		self.parent:button('left')
+		self:callButton('left')
 	elseif key == 'right' or key == 'd' then
-		self.parent:button('right')
+		self:callButton('right')
 	elseif key == 'up' or key == 'w' then
-		self.parent:button('up')
+		self:callButton('up')
 	elseif key == 'down' or key == 's' then
-		self.parent:button('down')
+		self:callButton('down')
 	elseif key == 'space' or key == 'return' then
-		self.parent:button('action')
+		self:callButton('action')
 	end
 end
 

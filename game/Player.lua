@@ -18,10 +18,10 @@ function Player:button(button)
 	elseif button == 'down' then
 		self.y = self.y + 1
 	elseif button == 'action' then
-		self.parent:button(button)
+		self.parent:clear(self.x, self.y)
 	end
-	self.x = self.x % self.parent.grid.size
-	self.y = self.y % self.parent.grid.size
+	self.x = self.x % self.parent.size
+	self.y = self.y % self.parent.size
 end
 
 function Player:draw()
