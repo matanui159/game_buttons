@@ -1,7 +1,7 @@
 local Entity = require('Entity')
 local Button = require('game.Button')
 
-local Input = require('game.input.Input')
+local Input = require('game.input.Keyboard')
 
 local GameScene = Entity:extend()
 
@@ -17,10 +17,8 @@ function GameScene:new(size)
 	end
 end
 
-function GameScene:updateEnd()
-	if self.input.action then
-		print('ACTION')
-	end
+function GameScene:input(input)
+	print(input)
 end
 
 function GameScene:draw()
