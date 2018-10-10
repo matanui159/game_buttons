@@ -1,36 +1,44 @@
 local Entity = require('Entity')
+local Grid = require('game.Grid')
 local Button = require('game.Button')
-
-local Input = require('game.input.Keyboard')
+local Player = require('game.Player')
+local Input = require('game.input.Input')
 
 local GameScene = Entity:extend()
 
 function GameScene:new(size)
-	self.size = size
-	self.buttons = Entity()
-	self.input = Input()
-
-	for y = 1, size do
-		for x = 1, size do
-			self.buttons[(y - 1) * size + x] = Button(x, y)
-		end
-	end
+	self.grid = Grid(size)
+	self.player = Player(Input())
 end
 
-function GameScene:input(input)
-	print(input)
+function GameScene:button(button)
+	self.grid:get(self.player.x, self.player.y):button(button)
+
+	local win = true
+	for _, button in ipairs(self.grid) do
+		if not button.clear then
+			win = false
+		end
+	end
+	if win then
+		Entity.root = GameScene(self.grid.size + 1)
+	end
 end
 
 function GameScene:draw()
 	love.graphics.push()
 	love.graphics.scale(
-		love.graphics.getWidth() / self.size,
-		love.graphics.getHeight() / self.size
+		love.graphics.getWidth() / self.grid.size,
+		love.graphics.getHeight() / self.grid.size
 	)
 end
 
 function GameScene:drawEnd()
 	love.graphics.pop()
+end
+
+function GameScene:lose()
+	print('LOSE')
 end
 
 return GameScene

@@ -1,17 +1,16 @@
 local Entity = require('Entity')
 
+local Keyboard = require('game.input.Keyboard')
+
 local Input = Entity:extend()
 
-function Input:callInput(button)
-	print(button)
-	local root = self
-	while root.parent do
-		root = root.parent
-		print(root)
-	end
+function Input:new()
+	self.keyboard = Keyboard()
+end
 
-	print(root)
-	root:callTree('input', button)
+function Input:button(button)
+	self.skip = true
+	self.parent:button(button)
 end
 
 return Input

@@ -1,6 +1,23 @@
-local Object = require('Object')
+local function object(parent)
+	local obj = {}
+	obj.__index = parent
+	return setmetatable(obj, obj)
+end
 
-local Entity = Object:extend()
+local Entity = object()
+Entity._entity = true
+
+function Entity:__call(...)
+	local obj = object(self)
+	obj:call('new', ...)
+	return obj
+end
+
+function Entity:extend()
+	local cls = object(self)
+	cls.__call = self.__call
+	return cls
+end
 
 function Entity:call(name, ...)
 	local func = self[name]
@@ -12,13 +29,15 @@ end
 function Entity:callTree(name, ...)
 	self:call(name, ...)
 	for key, child in pairs(self) do
-		if key ~= 'parent' and Object.is(child, Entity) then
-			if not child.skip then
-				child.parent = self
-				child:callTree(name, ...)
-				child.parent = nil
+		if key ~= 'parent' and key ~= '__index' then
+			if type(child) == 'table' and child._entity then
+				if not child.skip then
+					child.parent = self
+					child:callTree(name, ...)
+					child.parent = nil
+				end
+				child.skip = nil
 			end
-			child.skip = nil
 		end
 	end
 	self:call(name .. 'End', ...)
