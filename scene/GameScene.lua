@@ -63,7 +63,7 @@ function GameScene:drawEnd()
 end
 
 function GameScene:lose()
-	print('LOSE')
+	Entity.root = GameScene(1)
 end
 
 return GameScene

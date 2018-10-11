@@ -25,7 +25,7 @@ function Player:button(button)
 end
 
 function Player:draw()
-	love.graphics.setColor(1, 0, 0, 1)
+	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.setLineWidth(0.1)
 	love.graphics.rectangle('line', self.x + 0.05, self.y + 0.05, 0.9, 0.9)
 end
