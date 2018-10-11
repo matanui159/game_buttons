@@ -2,7 +2,7 @@ local GameScene = require('scene.GameScene')
 local Entity = require('Entity')
 
 function love.load()
-	Entity.root = GameScene(3)
+	Entity.root = GameScene()
 end
 
 function love.keypressed(key)

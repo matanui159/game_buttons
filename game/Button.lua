@@ -10,8 +10,8 @@ function Button:new(x, y, size)
 end
 
 function Button:clear()
-	if self.timer < 0 and not self.state then
-		self.state = true
+	if self.timer < 0 and not self.win then
+		self.win = true
 		self.vel = -10
 		return true
 	end
@@ -19,25 +19,25 @@ function Button:clear()
 end
 
 function Button:draw()
-	if not self.state then
+	if not self.win then
 		if self.timer > 0 then
 			love.graphics.setColor(0, 0, 1, 1)
 		else
-			love.graphics.setColor(1 + self.timer, 0, 0, 1)
+			love.graphics.setColor(1, 1 + self.timer, 0, 1)
 		end
 		love.graphics.rectangle('fill', self.x + 0.1, self.y + 0.1, 0.8, 0.8)
 	end
 end
 
 function Button:postDraw()
-	if self.state then
-		love.graphics.setColor(1, 0, 0, 1)
+	if self.win then
+		love.graphics.setColor(0, 1, 0, 1)
 		love.graphics.rectangle('fill', self.x + 0.1, self.y + 0.1, 0.8, 0.8)
 	end
 end
 
 function Button:update(dt)
-	if self.state then
+	if self.win then
 		self.vel = self.vel + dt * 100
 		self.y = self.y + self.vel * dt
 	else

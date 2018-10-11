@@ -6,6 +6,7 @@ local AllInput = require('game.input.AllInput')
 local GameScene = Entity:extend()
 
 function GameScene:new(size)
+	size = size or 3
 	self.size = size
 	self.player = Player(AllInput())
 
@@ -33,7 +34,6 @@ function GameScene:clear(x, y)
 			Entity.root = GameScene(self.size + 1)
 			Entity.root.player = self.player
 			Entity.root.shake = self.shake
-			collectgarbage()
 		end
 	end
 end
@@ -63,7 +63,7 @@ function GameScene:drawEnd()
 end
 
 function GameScene:lose()
-	Entity.root = GameScene(1)
+	Entity.root = GameScene()
 end
 
 return GameScene
