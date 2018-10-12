@@ -2,11 +2,13 @@ local Entity = require('Entity')
 local Button = require('game.Button')
 local Player = require('game.Player')
 local AllInput = require('game.input.AllInput')
+local EndScene = require('scene.EndScene')
 
 local GameScene = Entity:extend()
 
-function GameScene:new(size)
+function GameScene:new(size, score)
 	size = size or 3
+	score = score or 0
 	self.size = size
 	self.player = Player(AllInput())
 
@@ -17,6 +19,7 @@ function GameScene:new(size)
 		end
 	end
 	self.count = size * size
+	self.score = score
 
 	self.timer = 0
 	self.shake = {
@@ -30,8 +33,9 @@ function GameScene:clear(x, y)
 	if self.buttons[y * self.size + x + 1]:clear() then
 		self.shake.pow = 100
 		self.count = self.count - 1
+		self.score = self.score + 1
 		if self.count == 0 then
-			Entity.root = GameScene(self.size + 1)
+			Entity.root = GameScene(self.size + 1, self.score)
 			Entity.root.player = self.player
 			Entity.root.shake = self.shake
 		end
@@ -63,7 +67,7 @@ function GameScene:drawEnd()
 end
 
 function GameScene:lose()
-	Entity.root = GameScene()
+	Entity.root = EndScene(self.score, GameScene())
 end
 
 return GameScene

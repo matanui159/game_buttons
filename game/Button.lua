@@ -6,7 +6,7 @@ function Button:new(x, y, size)
 	self.x = x
 	self.y = y
 	self.size = size
-	self.timer = size * love.math.random()
+	self.timer = size * (1 - math.pow(love.math.random(), 1.5))
 end
 
 function Button:clear()
@@ -20,19 +20,32 @@ end
 
 function Button:draw()
 	if not self.win then
+		local size = 0.8
 		if self.timer > 0 then
 			love.graphics.setColor(0, 0, 1, 1)
 		else
-			love.graphics.setColor(1, 1 + self.timer, 0, 1)
+			love.graphics.setColor(1, 0, 0, 1)
+			size = size * (1 + self.timer)
 		end
-		love.graphics.rectangle('fill', self.x + 0.1, self.y + 0.1, 0.8, 0.8)
+		love.graphics.rectangle('fill',
+			self.x + 0.5 - size / 2,
+			self.y + 0.5 - size / 2,
+			size,
+			size
+		)
 	end
 end
 
 function Button:postDraw()
 	if self.win then
+		local size = 0.8 * (1 + self.timer)
 		love.graphics.setColor(0, 1, 0, 1)
-		love.graphics.rectangle('fill', self.x + 0.1, self.y + 0.1, 0.8, 0.8)
+		love.graphics.rectangle('fill',
+			self.x + 0.5 - size / 2,
+			self.y + 0.5 - size / 2,
+			size,
+			size
+		)
 	end
 end
 
